@@ -14,4 +14,10 @@ RUN Invoke-WebRequest $('https://nodejs.org/dist/v{0}/node-v{0}-win-x64.zip' -f 
     $env:PATH = 'C:\nodejs;{0}\npm;{1}' -f $env:APPDATA, $env:PATH ; \
     Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment\' -Name Path -Value $env:PATH ; \
     Remove-Item -Path node.zip
-CMD [ "node.exe" ]
+
+RUN write-output 'copy -Path c:\code -Destination c:\run -Recurse -Force' | out-file c:\run.ps1
+RUN write-output 'set-location c:\run' | out-file c:\run.ps1 -append
+RUN write-output 'npm install' | out-file c:\run.ps1 -append
+RUN write-output 'npm start' | out-file c:\run.ps1 -append
+
+CMD \run.ps1
