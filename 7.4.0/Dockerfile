@@ -15,7 +15,8 @@ RUN Invoke-WebRequest $('https://nodejs.org/dist/v{0}/node-v{0}-win-x64.zip' -f 
     Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment\' -Name Path -Value $env:PATH ; \
     Remove-Item -Path node.zip
 
-RUN write-output 'copy -Path c:\code -Destination c:\run -Recurse -Force' | out-file c:\run.ps1
+RUN write-output 'rmdir c:\run -Force -Recurse -ErrorAction SilentlyContinue' | out-file c:\run.ps1
+RUN write-output 'copy -Path c:\code -Destination c:\run -Recurse -Force' | out-file c:\run.ps1 -append
 RUN write-output 'set-location c:\run' | out-file c:\run.ps1 -append
 RUN write-output 'npm install' | out-file c:\run.ps1 -append
 RUN write-output 'npm start' | out-file c:\run.ps1 -append
